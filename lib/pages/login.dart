@@ -1,4 +1,5 @@
 import 'package:app_asistencias/pages/clases.dart';
+import 'package:app_asistencias/pages/home_screen.dart';
 import 'package:app_asistencias/widgets/barra_nav.dart';
 import 'package:flutter/material.dart';
 
@@ -103,10 +104,7 @@ class _Login_PageState extends State<Login_Page> {
               onPressed: () {
                 // PRUEBAS
                 // Navegar a la pagina de inicio sin verificacion
-                Navigator.push(
-                    context,
-                  MaterialPageRoute(builder: (context) => const BarraNav()),
-                );
+                Navigator.pushReplacementNamed(context, '/home');
                 // Lógica inicio sesión
                 // Verificar que las credenciales sean correctas etc
               },

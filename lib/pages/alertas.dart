@@ -6,8 +6,10 @@ class Alertas_Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('prueba pag alertas'),
+    return Scaffold(
+      body: Center(
+        child: Text("Pagina de alertas"),
+      )
     );
   }
 }

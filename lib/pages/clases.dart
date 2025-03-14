@@ -6,8 +6,10 @@ class Clases_Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('prueba pag clases'),
+    return Scaffold(
+      body: Center(
+          child: Text('prueba pag clases')
+      ),
     );
   }
 }
