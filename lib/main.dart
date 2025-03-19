@@ -1,4 +1,5 @@
 import 'package:app_asistencias/pages/home_screen.dart';
+import 'package:app_asistencias/providers/fecha_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_asistencias/providers/index_provider.dart';
@@ -13,6 +14,7 @@ void main() {
       providers: [
         // Provider para gestionar el indice
         ChangeNotifierProvider(create: (_) => IndexProvider()),
+        ChangeNotifierProvider(create: (_) => FechaProvider())
       ],
       child: const MyApp(),
     ),

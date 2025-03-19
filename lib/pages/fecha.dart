@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:provider/provider.dart';
+import 'package:app_asistencias/providers/fecha_provider.dart';
 
 class Fecha_popUp extends StatefulWidget {
   const Fecha_popUp({super.key});
@@ -25,13 +27,19 @@ class _Fecha_popUpState extends State<Fecha_popUp> {
 
   void _onSelectedDay(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
-      fecha = selectedDay; // Ahora actualiza bien la fecha
+      fecha = selectedDay;
       _focusedDay = focusedDay;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // Accedemos al fecha provider
+    final fechaProvider = Provider.of<FechaProvider>(context);
+
+    // Accedemos al provider con posibilidad de modificarlo
+    final fechaSeleccionada = Provider.of<FechaProvider>(context).fecha;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(30),
@@ -40,18 +48,25 @@ class _Fecha_popUpState extends State<Fecha_popUp> {
           TableCalendar(
             rowHeight: 40,
             locale: 'es_ES',
+
+            //Permite que no sea necesario pulsar sobre las flechas sino también deslizar
             availableGestures: AvailableGestures.all,
             onDaySelected: _onSelectedDay,
             selectedDayPredicate: (day) => isSameDay(day, fecha),
             focusedDay: _focusedDay,
-            // Fecha marcada (La actual)
+
+            // Fecha comienzo de calendario
             firstDay: DateTime.utc(2000, 1, 1),
-            // Comienza el calendario
+
+            // Finaliza el calendario
             lastDay: DateTime.utc(2090, 31, 12),
-            calendarFormat: CalendarFormat.month, // Formato por defecto
+            calendarFormat: CalendarFormat.month, // Formato por defecto, mensual
+
+            startingDayOfWeek: StartingDayOfWeek.monday,
+
             headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true
+              formatButtonVisible: false, // Ocultar botón de formato de calendario
+              titleCentered: true // El mes que se muestra sale centrado
             ),
 
 
@@ -61,7 +76,7 @@ class _Fecha_popUpState extends State<Fecha_popUp> {
           SizedBox(height: 20),
 
           // Muestra la fecha selecionada
-          Text("Día seleccionado: ${DateFormat('dd-MM-yyyy').format(fecha)}"),
+          Text("Día seleccionado: ${DateFormat('dd-MM-yyyy').format(fechaSeleccionada)}"),
 
           SizedBox(height: 20),
 
@@ -73,7 +88,7 @@ class _Fecha_popUpState extends State<Fecha_popUp> {
                 backgroundColor: const Color(0xFF003E00), // Color hexadecimal
                 fixedSize: Size.fromHeight(40)),
             onPressed: () {
-              fecha = _focusedDay;
+              fechaProvider.actualizarFecha(_focusedDay);
               Navigator.pushReplacementNamed(context, '/home');
             },
             child: const Text(
