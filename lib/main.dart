@@ -1,5 +1,6 @@
 import 'package:app_asistencias/pages/home_screen.dart';
 import 'package:app_asistencias/providers/fecha_provider.dart';
+import 'package:app_asistencias/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_asistencias/providers/index_provider.dart';
@@ -12,11 +13,12 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        // Provider para gestionar el indice
+        // Provider para gestionar el indice y la fecha
         ChangeNotifierProvider(create: (_) => IndexProvider()),
-        ChangeNotifierProvider(create: (_) => FechaProvider())
+        ChangeNotifierProvider(create: (_) => FechaProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider())
       ],
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }

@@ -1,7 +1,10 @@
 import 'package:app_asistencias/pages/clases.dart';
 import 'package:app_asistencias/pages/home_screen.dart';
+import 'package:app_asistencias/providers/user_provider.dart';
 import 'package:app_asistencias/widgets/barra_nav.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:app_asistencias/widgets/encabezado.dart';
 
 class Login_Page extends StatefulWidget {
   const Login_Page({super.key});
@@ -12,6 +15,8 @@ class Login_Page extends StatefulWidget {
 
 class _Login_PageState extends State<Login_Page> {
   bool _isChecked = false; // Variable para controlar el estado del checkbox
+  String _email = "";
+  String _pass = "";
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +30,13 @@ class _Login_PageState extends State<Login_Page> {
             Spacer(flex: 1),
 
             // Logo
-            Image.asset(
-              'images/icono_app.png',
-              width: 200,
+            Expanded(
+              flex: 3,
+              child: Image.asset(
+                'images/icono_app.png',
+              ),
             ),
+
 
             // Espacio entre el logo y el campo de texto
             const SizedBox(height: 20),
@@ -46,6 +54,9 @@ class _Login_PageState extends State<Login_Page> {
               ),
             ),
             TextField(
+              onChanged: (email){
+                _email = email;
+              },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
               ),
@@ -67,6 +78,9 @@ class _Login_PageState extends State<Login_Page> {
               ),
             ),
             TextField(
+              onChanged: (pass) {
+                _pass = pass;
+              },
               obscureText: true, // Ocultar el texto de la contraseña
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -103,10 +117,48 @@ class _Login_PageState extends State<Login_Page> {
               ),
               onPressed: () {
                 // PRUEBAS
-                // Navegar a la pagina de inicio sin verificacion
-                Navigator.pushReplacementNamed(context, '/home');
                 // Lógica inicio sesión
                 // Verificar que las credenciales sean correctas etc
+                print("Email es: " + _email );
+                if (_email == "Paula" && _pass == "1234") {
+                  // Guardamos el "email, nombre con un provider para usarlo de encabezado
+                  Provider.of<UserProvider>(context, listen: false).setEmail(_email);
+
+                  // Navegar a la pagina de inicio sin verificacion
+                  Navigator.pushReplacementNamed(context, '/home');
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          textAlign: TextAlign.center,
+                          "Credenciales incorrectas"
+                        ),
+                        content: Text(
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                            "Los datos introducidos son incorrectos, revisa el usuario y contraseña."
+                        ),
+                        actions: [
+                          TextButton(
+                            child: Text(
+                              style: TextStyle(
+                                fontSize: 20
+                              ),
+                              "Cerrar"
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Cierra el diálogo
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
               },
               child: const Text(
                 'Iniciar Sesión',
